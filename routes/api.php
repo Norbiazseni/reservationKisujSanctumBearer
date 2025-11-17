@@ -3,11 +3,20 @@
 use App\Http\Controllers\Api\ReservationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
+//Nyilvános végpontok
 Route::get('/hello', function (Request $request) {
     return response()->json(['message'=>'Hello API']);
 });
+Route::post('/register',[AuthController::class, 'register']);
+Route::post('/login',[AuthController::class, 'login']);
 
+
+//Authentikált végpontok
+Route::middleware('auth:sanctum')->post('/logout',[AuthController::class, 'logout']);
+
+//Ezeket is authentikálttá kell tenni
 Route::get('/reservations',[ReservationController::class, 'index']); // összes foglalás
 Route::get('/reservations/{id}',[ReservationController::class, 'show']); // egy foglalás
 Route::post('/reservations',[ReservationController::class, 'store']); // egy foglalás rögzítése
