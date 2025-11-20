@@ -81,6 +81,4 @@ class ReservationController extends Controller
         $reservation->delete();
         return response()->json(['message'=>'Foglalás törölve.'], 200);
     }
-
-
 }
