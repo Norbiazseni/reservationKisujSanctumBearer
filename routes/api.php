@@ -17,7 +17,7 @@ Route::post('/login',[AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout',[AuthController::class, 'logout']);
 
 //Ezeket is authentikálttá kell tenni
-Route::get('/reservations',[ReservationController::class, 'index']); // összes foglalás
+Route::middleware('auth:sanctum')->get('/reservations',[ReservationController::class, 'index']); // összes foglalás
 Route::get('/reservations/{id}',[ReservationController::class, 'show']); // egy foglalás
 Route::post('/reservations',[ReservationController::class, 'store']); // egy foglalás rögzítése
 Route::put('/reservations/{id}',[ReservationController::class, 'update']); // egy foglalás minden mezőjét módosítom
