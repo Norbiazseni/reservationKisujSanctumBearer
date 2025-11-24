@@ -31,7 +31,7 @@ class AuthControllerTest extends TestCase
             'name' => 'Norbert',
             'email' => 'siposnorbi@gmail.com',
             'password' => 'Jelszo_2025',
-             'password_confirmation' => 'Jelszo_2025',
+            'password_confirmation' => 'Jelszo_2025',
         ];
         //Act
         $response = $this->postJson('/api/register', $payload);
@@ -47,12 +47,12 @@ class AuthControllerTest extends TestCase
         //Arrange
         $user = User::factory()->create([
             'email' => 'teszt@example.com',
-            'password' => bcrypt('password123'),
+            'password' => 'password123',
         ]);
 
         $credentials= [
             'email' => 'teszt@example.com',
-            'password' => bcrypt('password123'),
+            'password' => 'password123',
         ];
 
         $response = $this->postJson('/api/login', $credentials);
@@ -63,5 +63,16 @@ class AuthControllerTest extends TestCase
     public function user_can_logout()
     {
         //Arrange
+        $user = User::factory()->create();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        //Act
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->postJson('/api/logout');
+
+        //Assert
+        $response->assertStatus(200)->assertJson(['message' => 'Sikeres kijelentkezés']);
     }
 }
